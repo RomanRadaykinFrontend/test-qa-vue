@@ -64,7 +64,10 @@ const login = () => {
         })
         model.value.login = ''
         model.value.password = ''
-        form.value.clearValidate()
+        if(form.value){
+          form.value.clearValidate()
+        }
+
       } else {
         ElNotification({
           title: 'Неудача!',
