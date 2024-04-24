@@ -2,12 +2,20 @@
   <div class="wraaper">
     <h3>Форма входа</h3>
     <el-form ref="form" :rules="rules" label-position="top" :model="model">
-      <el-form-item :class="createClass('login-wrapper')" label="Лагин" prop="login">
-        <el-input :class="createClass('login')" v-model="model.login"></el-input>
-      </el-form-item>
-      <el-form-item :class="createClass('password-wrapper')" label="Пароль" prop="password">
-        <el-input :class="createClass('password')" type="password" clearable v-model="model.password"></el-input>
-      </el-form-item>
+      <div v-for="el in sortedElems" :key="el.id">
+        <el-form-item :class="el.wrpClass" :label="el.label" :prop="el.prop">
+          <el-input :clearable="el.isPass" :type="el.isPass ? 'password' : ''" :class="el.class" v-model="model[el.prop]"></el-input>
+        </el-form-item>
+      </div>
+
+
+<!--      <el-form-item :class="createClass('login-wrapper')" label="Лагин" prop="login">-->
+<!--        <el-input :class="createClass('login')" v-model="model.login"></el-input>-->
+<!--      </el-form-item>-->
+
+<!--      <el-form-item :class="createClass('password-wrapper')" label="Пароль" prop="password">-->
+<!--        <el-input :class="createClass('password')" type="password" clearable v-model="model.password"></el-input>-->
+<!--      </el-form-item>-->
     </el-form>
     <el-button @click="login">Войти</el-button>
   </div>
@@ -16,6 +24,46 @@
 <script lang="ts" setup>
 import {ref} from "vue";
 import {ElNotification, ElForm, ElFormItem, ElInput, ElButton} from "element-plus";
+
+const createClass = (str: string) => {
+  return `${str}${Math.random()}`
+}
+
+const elements = [
+  {
+    id: Math.random(),
+    label: 'Лагин',
+    wrpClass: createClass('login-wrapper'),
+    class: createClass('login'),
+    prop: 'login',
+    isPass: false,
+    isHidden: false
+  },
+  {
+    id: Math.random(),
+    label: 'Лагин',
+    wrpClass: `${createClass('login-wrapper')} none`,
+    class: createClass('login'),
+    prop: 'login', isPass: false, isHidden: true
+  },
+  {
+    id: Math.random(),
+    label: 'Пароль',
+    wrpClass: createClass('password-wrapper'),
+    class: createClass('password'),
+    prop: 'password', isPass: true, isHidden: false
+  },
+  {
+    id: Math.random(),
+    label: 'Пароль',
+    wrpClass: `${createClass('password-wrapper')} none`,
+    class: createClass('password'),
+    prop: 'password', isPass: true, isHidden: true
+  }
+]
+
+const sortedElems = elements.sort((a,b) => a.id - b.id)
+
 
 const correctPass = '!!vk-forever12'
 const regexDict = {
@@ -28,10 +76,6 @@ const model = ref({
 })
 
 const form = ref<null | HTMLFormElement>(null)
-
-const createClass = (str: string) => {
-  return `${str}${Math.random()}`
-}
 
 const validateLog = (rule: any, value: any, callback: any) => {
   if (!value || value.trim === ''){
@@ -108,5 +152,8 @@ const rules = {
 }
 .el-button{
   margin-top: 30px;
+}
+.none{
+  display: none !important;
 }
 </style>
