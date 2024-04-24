@@ -4,18 +4,9 @@
     <el-form ref="form" :rules="rules" label-position="top" :model="model">
       <div v-for="el in sortedElems" :key="el.id">
         <el-form-item :class="el.wrpClass" :label="el.label" :prop="el.prop">
-          <el-input :clearable="el.isPass" :type="el.isPass ? 'password' : ''" :class="el.class" v-model="model[el.prop]"></el-input>
+          <el-input :clearable="el.isPass" :type="el.isPass ? 'password' : ''" :class="el.class" v-model="model[el.prop as string]"></el-input>
         </el-form-item>
       </div>
-
-
-<!--      <el-form-item :class="createClass('login-wrapper')" label="Лагин" prop="login">-->
-<!--        <el-input :class="createClass('login')" v-model="model.login"></el-input>-->
-<!--      </el-form-item>-->
-
-<!--      <el-form-item :class="createClass('password-wrapper')" label="Пароль" prop="password">-->
-<!--        <el-input :class="createClass('password')" type="password" clearable v-model="model.password"></el-input>-->
-<!--      </el-form-item>-->
     </el-form>
     <el-button @click="login">Войти</el-button>
   </div>
